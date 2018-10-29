@@ -1,7 +1,7 @@
 <?php
 
-namespace ishop\base;
-use ishop\Db;
+namespace vendor\ishop\core\base;
+use vendor\ishop\core\Db;
 
 abstract class Model
 {
@@ -13,5 +13,4 @@ abstract class Model
     {
         Db::instance();
     }
-
 }

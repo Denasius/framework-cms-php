@@ -1,12 +1,12 @@
 <?php
 
-namespace ishop;
+namespace vendor\ishop\core;
 
 
 class Router
 {
     protected static $routes = [];
-    public static $route = [];
+    protected static $route = [];
 
     public static function add ( $regexp, $route = [] )
     {
@@ -26,38 +26,37 @@ class Router
     public static function dispatch ( $url )
     {
         $url = self::removeQueryString($url);
-        if ( self::matchRoute( $url ) ) {
+        if ( self::matchRoute($url) ) {
             $controller = 'app\controllers\\' . self::$route['prefix'] . self::$route['controller'] . 'Controller';
-            if ( class_exists( $controller ) ) {
+            if ( class_exists($controller) ) {
                 $controllerObj = new $controller(self::$route);
                 $action = self::lowerCamelCase(self::$route['action']) . 'Action';
-                if ( method_exists( $controllerObj, $action ) ) {
+                if ( method_exists($controllerObj, $action) ) {
                     $controllerObj->$action();
                     $controllerObj->getView();
                 }else{
-                    throw new \Exception("Метод {$action} не найден", 404);
+                    throw new \Exception("Метод {$action} контроллера {$controller} не найден",404);
                 }
             }else{
-                throw new \Exception("Контроллер {$controller} не найден", 404);
+                throw new \Exception("Контроллер {$controller} не найден",404);
             }
         }else{
-            throw new \Exception("Страница не найдена", 404);
+            throw new \Exception("Страница не найдена",404);
         }
     }
-
     public static function matchRoute ( $url )
     {
-        foreach ( self::$routes as $pattern => $route ){
-            if ( preg_match( "#{$pattern}#", $url, $matches ) ) {
+        foreach ( self::$routes as $pattern => $route ) {
+            if ( preg_match("#{$pattern}#", $url, $matches) ) {
                 foreach ( $matches as $k => $v ) {
-                    if ( is_string( $k ) ) {
+                    if ( is_string($k) ) {
                         $route[$k] = $v;
                     }
                 }
                 if ( empty( $route['action'] ) ) {
                     $route['action'] = 'index';
                 }
-                if ( !isset( $route['prefix'] ) ) {
+                if ( !isset($route['prefix']) ) {
                     $route['prefix'] = '';
                 }else{
                     $route['prefix'] .= '\\';
@@ -70,26 +69,25 @@ class Router
         return false;
     }
 
-    protected static function upperCamelCase ( $name )
+    protected static function upperCamelCase ($name)
     {
         return str_replace(' ', '', ucwords(str_replace('-', ' ', $name)));
     }
 
-    protected static function lowerCamelCase ( $name )
+    protected static function lowerCamelCase ($name)
     {
-        return lcfirst(self::upperCamelCase( $name ));
+        return lcfirst(self::upperCamelCase($name));
     }
 
-    protected static function removeQueryString( $url )
+    protected static function removeQueryString ( $url )
     {
         if ( $url ) {
             $params = explode('&', $url, 2);
             if ( false === strpos( $params[0], '=' ) ) {
-                return rtrim($params[0], '/');
+                return rtrim($params, '/');
             }else{
-                return '';
+                return '/';
             }
         }
     }
-
 }

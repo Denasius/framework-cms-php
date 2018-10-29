@@ -1,17 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: den_k
- * Date: 18.10.2018
- * Time: 14:57
- */
 
-namespace ishop;
+namespace vendor\ishop\core;
 
 
 class App
 {
     public static $app;
+
     public function __construct()
     {
         $query = trim($_SERVER['QUERY_STRING'], '/');
@@ -25,11 +20,10 @@ class App
     protected function getParams ()
     {
         $params = require_once CONF . '/params.php';
-        if ( !empty($params) ) {
+        if ( !empty( $params ) ) {
             foreach ( $params as $k => $v ) {
                 self::$app->setProperty($k, $v);
             }
         }
     }
-
 }

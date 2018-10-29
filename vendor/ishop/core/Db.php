@@ -1,23 +1,45 @@
 <?php
 
-namespace ishop;
+namespace vendor\ishop\core;
+use PDO;
+
 
 class Db
 {
     use TSingletone;
 
+    protected static $database;
+
     protected function __construct()
     {
         $db = require_once CONF . '/config_db.php';
-        class_alias('\RedBeanPHP\R', '\R');
-        \R::setup($db['dsn'], $db['user'], $db['password']);
-        if ( !\R::testConnection() ) {
-            throw new \Exception("Нет соединения c BD", 403);
-        }
-        \R::freeze(true);
-        if ( DEBUG ) {
-            \R::debug(true, 1);
+        self::$database = new PDO($db['dsn'], $db['user'], $db['password']);
+        if (!self::$database){
+            throw new \Exception("Нет соединения с БД", 500);
         }
     }
 
+    public static function query ($sql, $params = [])
+    {
+        $stmt = self::$database->prepare($sql);
+        if ( !empty( $params ) ) {
+            foreach ( $params as $k => $v ) {
+                $stmt->bindValue(":{$k}", $v);
+            }
+        }
+        $stmt->execute();
+        return $stmt;
+    }
+
+    public static function row ( $sql, $params = [] )
+    {
+        $result = self::query( $sql, $params );
+        return $result->fetchAll( PDO::FETCH_ASSOC );
+    }
+
+    public static function column ( $sql, $params = [] )
+    {
+        $result = self::query( $sql, $params );
+        return $result->fetchColumn();
+    }
 }

@@ -1,34 +1,28 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: den_k
- * Date: 18.10.2018
- * Time: 15:05
- */
 
-namespace ishop;
+namespace vendor\ishop\core;
 
 
 class Registry
 {
     use TSingletone;
+
     public static $properties = [];
 
-    public function setProperty ($name, $value)
+    public function setProperty ( $name, $value )
     {
         self::$properties[$name] = $value;
-
     }
 
-    public function getProperty ($name)
+    public function getProperty ( $name )
     {
-        if ( isset(self::$properties[$name]) ) {
+        if ( isset( self::$properties[$name] ) ) {
             return self::$properties[$name];
         }
         return null;
     }
 
-    public function getProperties()
+    public function getProperties ()
     {
         return self::$properties;
     }

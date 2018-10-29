@@ -1,17 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: den_k
- * Date: 18.10.2018
- * Time: 15:06
- */
 
-namespace ishop;
+namespace vendor\ishop\core;
 
 
 trait TSingletone
 {
-    private static $instance;
+    protected static $instance;
 
     public static function instance ()
     {
@@ -20,5 +14,4 @@ trait TSingletone
         }
         return self::$instance;
     }
-
 }

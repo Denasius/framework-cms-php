@@ -1,9 +1,9 @@
 <?php
+
 return [
-    'admin_email' => 'den@mai.ru',
+    'admin_email' => 'den_kostyuk1989@mail.ru',
     'shop_name' => 'Магазин ishop',
     'pagination' => 3,
     'smtp_login' => '',
-    'smtp_password' => ''
-
+    'smtp_password' => '',
 ];

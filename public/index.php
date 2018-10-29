@@ -1,6 +1,6 @@
 <?php
-require dirname(__DIR__) . '/config/init.php';
-require LIBS . '/functions.php';
+require dirname( __DIR__) . '/config/init.php';
+require dirname(__DIR__) . '/vendor/ishop/core/App.php';
+require dirname(__DIR__) . '/vendor/ishop/core/libs/functions.php';
 require CONF . '/routes.php';
-
-new \ishop\App();
+new \vendor\ishop\core\App();

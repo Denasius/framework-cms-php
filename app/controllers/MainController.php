@@ -2,18 +2,25 @@
 
 namespace app\controllers;
 
-use ishop\Cache;
+use vendor\ishop\core\Cache;
+use vendor\ishop\core\Db;
 
 class MainController extends AppController
 {
     public function indexAction ()
     {
-        $names = ['Денис', 'Диана'];
-        $posts = \R::findAll('test');
-        $this->setMeta('Главная страница', 'Описание главной страницы', '123');
-        $cache = Cache::instance();
-        $cache->set('test', $names);
+        $params = [
+            'id' => 2
+        ];
+        $posts = Db::row('SELECT * FROM news WHERE id = :id', $params);
+        $this->setMeta("Главная страница", "Описание", "Ключевики");
         $this->set(compact('posts'));
+        $names = ['Денис', 'Диана', 'Маргарита'];
+        $cache = Cache::instance();
+        $data = $cache->get('test');
+        if ( !$data ) {
+            $cache->set('test', $names);
+        }
+        debug($data);
     }
-
 }

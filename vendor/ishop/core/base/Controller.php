@@ -1,22 +1,16 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: den_k
- * Date: 19.10.2018
- * Time: 10:44
- */
 
-namespace ishop\base;
+namespace vendor\ishop\core\base;
 
 
 abstract class Controller
 {
     public $route;
-    public $layout;
     public $controller;
-    public $prefix;
     public $model;
+    public $layout;
     public $view;
+    public $prefix;
     public $data = [];
     public $meta = ['title' => '', 'desc' => '', 'keywords' => ''];
 
@@ -31,8 +25,8 @@ abstract class Controller
 
     public function getView ()
     {
-        $viewObgect = new View($this->route, $this->layout, $this->view, $this->meta);
-        $viewObgect->render( $this->data );
+        $viewObject = new View( $this->route, $this->layout, $this->view, $this->meta );
+        $viewObject->render($this->data);
     }
 
     public function set ( $data )
@@ -40,7 +34,7 @@ abstract class Controller
         $this->data = $data;
     }
 
-    public function setMeta ($title = '', $desc = '', $keywords = '')
+    public function setMeta ( $title = '', $desc = '', $keywords = '' )
     {
         $this->meta['title'] = $title;
         $this->meta['desc'] = $desc;

@@ -1,5 +1,6 @@
 <?php
-namespace ishop;
+
+namespace vendor\ishop\core;
 
 
 class Cache
@@ -11,6 +12,7 @@ class Cache
         if ( $seconds ) {
             $content['data'] = $data;
             $content['end_time'] = time() + $seconds;
+
             if ( file_put_contents( CACHE . '/' . md5($key) . '.txt', serialize($content) ) ) {
                 return true;
             }
@@ -18,25 +20,24 @@ class Cache
         return false;
     }
 
-    public function get ($key)
+    public function get ( $key )
     {
         $file = CACHE . '/' . md5($key) . '.txt';
         if ( file_exists( $file ) ) {
-            $content = unserialize( file_get_contents($file) );
+            $content = unserialize( file_get_contents( $file ) );
             if ( time() <= $content['end_time'] ) {
-                return $content;
+                return $content['data'];
             }
             unlink($file);
         }
         return false;
     }
 
-    public function delete ()
+    public function delete ($key)
     {
         $file = CACHE . '/' . md5($key) . '.txt';
-        if ( file_exists($file) ) {
+        if ( file_exists( $file ) ) {
             unlink($file);
         }
     }
-
 }
